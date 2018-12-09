@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 from base_crawler import BaseCrawler
 from settings import LOGGING, PROXY, THREAD
 from multiprocessing.dummy import Pool as ThreadPool
-from utils import retry, detect_captcha, handle_errors
+from utils import retry, detect_captcha, handle_errors, control_fitness
 
 
 WORKERS = THREAD['workers']
@@ -50,6 +50,7 @@ class ThreadCrawler(BaseCrawler, ProxyMixin):
     @handle_errors
     @detect_captcha
     @retry(MAX_RETRIES)
+    @control_fitness
     def _fire(self, url, session, proxy):
         """
         Method fires http/https request and returns html of a given website
@@ -72,6 +73,6 @@ class ThreadCrawler(BaseCrawler, ProxyMixin):
 
 if __name__ == '__main__':
     # urls = ['https://google.com'] * 1
-    urls = ['http://icanhazip.com/'] * 10
-    c = ThreadCrawler(urls)
+    urls = ['http://icanhazip.com/'] * 1
+    c = ThreadCrawler(urls, proxy=True)
     c.crawl()
