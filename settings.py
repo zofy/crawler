@@ -5,14 +5,17 @@ ASYNC = {
 }
 
 THREAD = {
-    'workers': 4,  # number of threads
     'timeout': 0.1,  # timeout in seconds
-    'retries': 2
+    'retries': 3,
+    'workers': 4,  # number of threads
 }
 
 PROXY = {
+    'default_fitness': 10,
+    'min_fitness': 1,
+    'max_fitness': 10,
     'quorum': 10,
-    'source': 'https://hidemyna.me/en/proxy-list/?maxtime=1000&type=h#list'
+    'IPs': ['37.110.74.225:8181', '85.26.146.169:80', '195.13.199.219:53796']
 }
 
 UNREACHED_URLS_PATH = 'unreached.txt'
@@ -113,10 +116,3 @@ LOGGING = {
         },
     },
 }
-
-PROXY_IPS = ['37.110.74.225:8181', '85.26.146.169:80', '195.13.199.219:53796']
-
-DEFAULT_FITNESS = .1
-
-MINIMAL_FITNESS = .01
-MAXIMAL_FITNESS = 1

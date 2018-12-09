@@ -1,5 +1,5 @@
-from requests.exceptions import Timeout
 from asyncio import CancelledError, TimeoutError
+from requests.exceptions import Timeout, ConnectionError
 from aiohttp.client_exceptions import ClientHttpProxyError, ClientProxyConnectionError, ClientOSError
 
 
@@ -8,4 +8,4 @@ class CaptchaError(Exception):
 
 
 ProxyErrors = (CaptchaError, ClientOSError, ClientProxyConnectionError, ClientHttpProxyError)
-TimeoutErrors = (Timeout, TimeoutError, CancelledError)
+TimeoutErrors = (Timeout, TimeoutError, CancelledError, ConnectionError)
