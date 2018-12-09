@@ -8,7 +8,7 @@ from proxy_mixin import ProxyMixin
 from fake_useragent import UserAgent
 from base_crawler import BaseCrawler
 from settings import ASYNC, LOGGING, PROXY
-from utils import io_loop, retry, detect_captcha, handle_errors, save_to_file
+from utils import io_loop, async_retry, async_detect_captcha, handle_errors, save_to_file, async_control_fitness
 
 SEMAPHORE = ASYNC['semaphore']
 TIMEOUT = ASYNC['timeout']
@@ -49,8 +49,9 @@ class AsyncCrawler(BaseCrawler, ProxyMixin):
             return super(AsyncCrawler, self).pick_proxy()
 
     @handle_errors
-    @detect_captcha
-    @retry(MAX_RETRIES)
+    @async_detect_captcha
+    @async_retry(MAX_RETRIES)
+    @async_control_fitness
     async def _fire(self, url, session, proxy):
         """
         Coroutine fires http/https request in an async manner
@@ -59,8 +60,6 @@ class AsyncCrawler(BaseCrawler, ProxyMixin):
         :param proxy: String, https proxy
         :return: String, html of a given website
         """
-        if proxy and proxy not in self.proxies:
-            proxy = self.pick_proxy()
         async with self._semaphore, async_timeout.timeout(TIMEOUT), session.get(url,
                                                                                 headers={
                                                                                     'user-agent': USER_AGENT.random},
@@ -84,8 +83,9 @@ class AsyncCrawler(BaseCrawler, ProxyMixin):
 
 if __name__ == '__main__':
     # urls = ['http://google.com/'] * 10
-    urls = ['http://icanhazip.com/'] * 10
-    crawler = AsyncCrawler(urls=urls, proxy=False)
+    urls = ['http://icanhazip.com/'] * 1
+    crawler = AsyncCrawler(urls=urls, proxy=True)
     # print(crawler.proxies)
     crawler.crawl()
-    # print(crawler.results)
+    print(crawler.results)
+3
