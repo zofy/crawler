@@ -8,7 +8,7 @@ verify_ssl = true
 [packages]
 aiohttp = "==3.4.4"
 attrs = "==18.2.0"
-certifi = "==2018.10.15"
+certifi = "==2022.12.7"
 chardet = "==3.0.4"
 idna = "==2.7"
 multidict = "==4.4.2"
